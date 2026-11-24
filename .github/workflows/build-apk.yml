@@ -1,0 +1,44 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: Package Web App & Icon into Android Project
+        run: |
+          mkdir www
+          cp index.html manifest.json www/
+          npm init -y
+          npm install @capacitor/core @capacitor/cli @capacitor/android
+          npx cap init "Motion Studio" "com.motionstudio.app" --web-dir www
+          npx cap add android
+          find android/app/src/main/res -name "ic_launcher*.png" -exec cp 1795527510646.jpg {} \;
+          npx cap sync android
+
+      - name: Build Debug APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Motion-Studio-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
