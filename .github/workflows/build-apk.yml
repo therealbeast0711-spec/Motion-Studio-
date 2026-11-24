@@ -27,10 +27,10 @@ jobs:
           mkdir www
           cp index.html manifest.json www/
           npm init -y
-          npm install @capacitor/core @capacitor/cli @capacitor/android
+          npm install @capacitor/core @capacitor/cli @capacitor/android sharp-cli
           npx cap init "Motion Studio" "com.motionstudio.app" --web-dir www
           npx cap add android
-          convert 1795527510646.jpg -resize 512x512 icon.png
+          npx sharp -i 1795527510646.jpg -o icon.png resize 512 512
           find android/app/src/main/res -name "ic_launcher*.png" -exec cp icon.png {} \;
           rm -rf android/app/src/main/res/mipmap-anydpi-v26
           npx cap sync android
