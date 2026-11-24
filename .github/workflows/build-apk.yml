@@ -20,6 +20,8 @@ jobs:
           distribution: 'temurin'
           java-version: 21
 
+      - uses: android-actions/setup-android@v3
+
       - name: Package Web App & Icon into Android Project
         run: |
           mkdir www
@@ -28,7 +30,9 @@ jobs:
           npm install @capacitor/core @capacitor/cli @capacitor/android
           npx cap init "Motion Studio" "com.motionstudio.app" --web-dir www
           npx cap add android
-          find android/app/src/main/res -name "ic_launcher*.png" -exec cp 1795527510646.jpg {} \;
+          convert 1795527510646.jpg -resize 512x512 icon.png
+          find android/app/src/main/res -name "ic_launcher*.png" -exec cp icon.png {} \;
+          rm -rf android/app/src/main/res/mipmap-anydpi-v26
           npx cap sync android
 
       - name: Build Debug APK
