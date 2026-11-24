@@ -1,0 +1,10 @@
+{
+  "name": "Motion Studio",
+  "short_name": "MotionStudio",
+  "start_url": "/Motion-Studio-/",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#141416",
+  "theme_color": "#1c1c1f"
+}
+
